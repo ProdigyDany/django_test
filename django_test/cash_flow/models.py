@@ -26,23 +26,23 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.TextField(null=False, blank=True, help_text="Подкатегория ДДС")
+    sub_category = models.TextField(
+        null=False, blank=True, help_text="Подкатегория ДДС"
+    )
 
     def __str__(self):
         return self.sub_category
 
 
 class CashFlow(models.Model):
-    created_at = models.DateField(default=timezone.now, help_text="Дата создания записи")
+    created_at = models.DateField(
+        default=timezone.now, help_text="Дата создания записи"
+    )
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
     sub_category = models.ForeignKey(
-        SubCategory,
-        on_delete=models.PROTECT,
-        help_text="Подкатегория ДДС"
+        SubCategory, on_delete=models.PROTECT, help_text="Подкатегория ДДС"
     )
     cash = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        help_text="Итоговая сумма"
+        max_digits=10, decimal_places=2, help_text="Итоговая сумма"
     )
     comments = models.TextField(null=True, blank=True, help_text="Комментарий")
