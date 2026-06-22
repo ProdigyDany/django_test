@@ -1,0 +1,54 @@
+{% extends 'cash_flow/base.html' %}
+
+{% block title %}
+Form
+{% endblock %}
+
+{% block body %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const typeSelect = document.getElementById('id_type');
+      const categorySelect = document.getElementById('id_category');
+      const subCategorySelect = document.getElementById('id_sub_category');
+
+      typeSelect.addEventListener('change', function () {
+          const typeId = this.value;
+          categorySelect.innerHTML = '<option value="">---------</option>';
+          subCategorySelect.innerHTML = '<option value="">---------</option>';
+
+          if (!typeId) return;
+
+          fetch(`{% url 'cash_flow:load_categories' %}?type_id=${typeId}`)
+              .then(response => response.json())
+              .then(data => {
+                  data.forEach(item => {
+                      const option = new Option(item.category, item.id);
+                      categorySelect.add(option);
+                  });
+              });
+      });
+
+      categorySelect.addEventListener('change', function () {
+          const categoryId = this.value;
+          subCategorySelect.innerHTML = '<option value="">---------</option>';
+
+          if (!categoryId) return;
+
+          fetch(`{% url 'cash_flow:load_subcategories' %}?category_id=${categoryId}`)
+              .then(response => response.json())
+              .then(data => {
+                  data.forEach(item => {
+                      const option = new Option(item.sub_category, item.id);
+                      subCategorySelect.add(option);
+                  });
+              });
+      });
+  });
+  </script>
+{% endblock %}
