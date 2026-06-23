@@ -25,7 +25,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com
+git clone https://github.com/ProdigyDany/django_test.git
 cd shopapp
 ```
 
